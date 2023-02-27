@@ -1,0 +1,30 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+img{
+    height: auto;
+    max-width: 10%;
+}  
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    background-color: #0B1B34;
+    color: #fff;
+    height: 50%;
+} 
+.brand-title {
+    font-size: 1.5rem;
+    margin: 0.8rem;
+}
+  
+  
+@media (max-width: 400px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+  
+
+
