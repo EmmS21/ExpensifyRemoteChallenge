@@ -113,10 +113,21 @@ h1 {
   color: #000;
 }
 #tablecontainer {
-  display: block;
+  display: none;
   text-align: center;
   
 }
+table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 75%;
+}
+table td {
+  border: solid 1px #666;
+  width: 110px;
+  word-wrap: break-word;
+}
+
 h3 {
   display: inline-block;
   position: relative;

@@ -12,13 +12,15 @@ function getPostData() {
   return http_build_query($_POST);
 }
 
-
 function makeGetRequest($baseURL) {
-    print_r('make Get Request triggered');
     $ch = curl_init();
-    $fullURL = $baseURL;
-//   .<URLparams here>; 
-    curl_setopt($ch, CURLOPT_URL, $fullURL);
+    $partnerName = $_GET['partnerName'];
+    $authToken = $_GET['authToken'];
+    $returnValueList = $_GET['returnValueList'];
+    // print_r($baseURL);
+    $fullURL = $baseURL.'&partnerName='.$_GET['partnerName'].'&authToken='.$_GET['authToken'].'&returnValueList='.$_GET['returnValueList'];
+    // print_r($fullURL);
+    curl_setopt($ch, CURLOPT_URL,$fullURL );
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
@@ -27,8 +29,9 @@ function makeGetRequest($baseURL) {
     if($e = curl_error($ch)) {
         echo $e;
     } else {
-    $json = $response;
-    return print_r($json);
+      echo $response;
+    // $json = $response;
+    // return print_r($json);
     }
 }
 
@@ -50,13 +53,6 @@ function makePostRequest($baseURL) {
         echo $e;
     } else {
         echo $response;
-        // $json = json_decode($response, true);
-        // return print_r($json);
-        // createCookie($json['authToken']);
-        // echo $json;
-        // return $json;
-        // header("Location: $redirect_url");
-        // exit();
     }
 }
 

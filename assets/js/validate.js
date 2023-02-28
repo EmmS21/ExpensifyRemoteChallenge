@@ -56,6 +56,7 @@ function validationRules() {
 
 // Function receives an input with its properties
 function validateForm(inputProps) {
+    // console.log("validateForm");
     const inputName = inputProps.name;
     const verifyInputName = {
         'emailadd': validationRules().email,
@@ -97,29 +98,54 @@ function manageState() {
 
 // Attaching 'keyup' event to the login form. 
 // Using event delegation
-// function attachKeyUpEvent() {
-//     loginForm.addEventListener('keyup', function(event) {
-//         const nodeName = event.target.nodeName;
-//         const inputProps = event.target;
+function attachKeyUpEvent() {
+    loginForm.addEventListener('keyup', function(event) {
+        const nodeName = event.target.nodeName;
+        const inputProps = event.target;
 
-//         if(nodeName === 'INPUT') {
-//             validateForm(inputProps);
-//         }
-//     });
-// }
-// function getReq(token){
-//     console.log('get Req triggered in JS')
-//     jQuery.ajax({
-//         type: "GET",
-//         url: "proxy.php?url=https://www.expensify.com/api?command=Get",
-//         dataType: "json",
-//         contentType: "application/x-www-form-urlencoded",
-//         data: token,
-//         success: function (data){
-//             console.log('get success', data)
-//         }
-//     })
-// }
+        if(nodeName === 'INPUT') {
+            validateForm(inputProps);
+        }
+    });
+}
+
+
+function getReq(token){
+    jQuery.ajax({
+        type: "GET",
+        url: "proxy.php?url=https://www.expensify.com/api?command=Get",
+        data: {partnerName: 'applicant', authToken: token, returnValueList: 'transactionList'},
+        success: function (response){
+            console.log(JSON.parse(response)['transactionList'])
+            const res = JSON.parse(response)['transactionList']
+            for(var i = 0; i < res.length; i++){
+                // console.log('res', res[i]);
+                var row = $(
+                    '<tr><td>'
+                    + res[i].inserted
+                    + '</td><td>'
+                    + res[i].merchant
+                    +'</td><td>'
+                    + res[i].amount
+                    +'</td><td>'
+                    + res[i].currency
+                    +'</td></tr>'
+                    );
+                $('#tBody').append(row);
+            }
+            document.getElementById("tablecontainer").style.display = "block";
+            document.getElementById("spin").style.display = "none";
+            document.getElementById("login-container").style.display = "none";
+        }
+    })    
+}
+
+function logout() {
+    sessionStorage.removeItem('authToken');
+    document.getElementById("login-container").style.display = "block";
+    document.getElementById("tablecontainer").style.display = "none";
+
+}
 
 function setCookie(name,value,days) {
     var expires = "";
@@ -129,13 +155,58 @@ function setCookie(name,value,days) {
         expires = "; expires=" + date.toUTCString();
     }
     document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+    console.log("SET TOKEN:",name, value);
+    sessionStorage.setItem(name,value);
+}
+
+//when page loads check if there is a cookie in local storage to verify if user is authenticated
+function pageLoad()
+{
+    const token = sessionStorage.getItem("authToken");
+    console.log("Token:", token);   
+    if(token)
+    {
+        getReq(token);
+    }
+}
+
+function createTransaction() {
+    const token = sessionStorage.getItem("authToken");
+    const createTransactButton = document.getElementsByClassName('create')[0];
+    createTransactButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        const inputs = document.getElementsByTagName('input');
+        const created = inputs[0].value;
+        const amount = inputs[1].value;
+        const merchant = inputs[2].value;
+        data = {
+            created: created,
+            amount: amount,
+            merchant: merchant
+        },
+        jQuery.ajax({
+            type: "POST",
+            url: "proxy.php?url=https://www.expensify.com/api?command=CreateTransaction",
+            dataType: "json",
+            contentType: 'application/x-www-form-urlencoded',
+            data: data,
+            success: function (response){
+                console.log('created', response);
+            }
+        })
+    })
+}
+
+//unhide form to create transaction
+function create() {
+    document.getElementById("create-container").style.display = "block";
+    document.getElementById("tablecontainer").style.display = "none";
 }
 
 function submitForm() {
     var script = document.createElement('script');
     script.src = 'https://code.jquery.com/jquery-3.6.3.min.js'; // Check https://jquery.com/ for the current version
     document.getElementsByTagName('head')[0].appendChild(script);
-
     const submitButton = document.getElementsByClassName('login')[0];
     submitButton.addEventListener('click', function(event) {
         event.preventDefault();
@@ -149,7 +220,7 @@ function submitForm() {
             partnerUserID: emailAddress,
             partnerUserSecret: password
         },
-        console.log('data',data)
+        // console.log('data',data)
         jQuery.ajax({
             type: "POST",
             url: "proxy.php?url=https://www.expensify.com/api?command=Authenticate",
@@ -157,12 +228,13 @@ function submitForm() {
             contentType: 'application/x-www-form-urlencoded',
             data: data,
             success: function (response){
-                console.log('resp', response);
-                // setCookie('authToken', resp['authToken'],1)
-                // console.log(resp['authToken'])
-                // window.location.href="http://127.0.0.1:5000/index.php";
-                // getReq(resp['authToken']);
-            },
+                console.log('resp', response['authToken']);
+                setCookie('authToken', response['authToken'],1)
+                document.getElementById("login-container").style.display = "none";
+                document.getElementById("spin").style.display = "block";
+                document.getElementById("auth-buttons").style.display = "flex";
+                getReq(response['authToken']);
+            },  
             error: function (response){
                 console.log('error', response);
             },
@@ -176,7 +248,7 @@ function submitForm() {
 }
 
 function init() {
-    // attachKeyUpEvent();
+    attachKeyUpEvent();
     submitForm("proxy.php");
 }
 
