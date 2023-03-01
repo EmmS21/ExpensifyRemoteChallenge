@@ -1,8 +1,9 @@
 
-    <div id="tablecontainer">
-        <h1>Transactions:</h1>
-        <table class="rwd-table sortable">
-            <tbody id="tBody">
+<div id="tablecontainer">
+    <span id="new-transact">New Transaction</span>
+    <h1 id="transact-title">Transactions:</h1>
+    <table class="rwd-table">
+        <tbody id="tBody">
             <tr>
                 <th>Transaction Date</th>
                 <th>Merchant</th>
@@ -19,10 +20,6 @@
                 <td data-th="Currency">
                 </td>
             </tr>
-            </tbody>
-        </table>
-    </div>
-    <div id="transactionForm">
-        <!-- Add your create transaction form here -->
-    </div>
-    <!-- Javascript Files, we've included JQuery here, feel free to use at your discretion. Add whatever else you may need here too. -->
+        </tbody>
+    </table>
+</div>

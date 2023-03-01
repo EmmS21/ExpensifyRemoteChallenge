@@ -1,7 +1,24 @@
-@import 'https://fonts.googleapis.com/css?family=Open+Sans:600,700';
+body {
+  background: #FEF9EF;
+}
 
-* {font-family: 'Open Sans', sans-serif;}
+#tablecontainer {
+  display: none;
+  text-align: center;
+}
 
+table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 75%;
+}
+
+table td {
+  border: solid 1px #666;
+  width: 110px;
+  word-wrap: break-word;
+}
+    
 .rwd-table {
   margin: auto;
   min-width: 300px;
@@ -49,6 +66,10 @@
   color: #000;
 }
 
+#new-transact{
+  display: none;
+}
+
 .rwd-table th,
 .rwd-table td {
   text-align: left;
@@ -58,6 +79,7 @@
   color: #333;
   border-radius: .4em;
   overflow: hidden;
+  float: right;
 }
 
 .rwd-table tr {
@@ -99,56 +121,6 @@
   }
 }
 
-
-/* THE END OF THE IMPORTANT STUFF */
-
-/* Basic Styling */
-body {
-background: #4B79A1;
-background: #FEF9EF;
-}
-h1 {
-  text-align: center;
-  font-size: 2.4em;
-  color: #000;
-}
-#tablecontainer {
-  display: none;
-  text-align: center;
-  
-}
-table {
-  border-collapse: collapse;
-  table-layout: fixed;
-  width: 75%;
-}
-table td {
-  border: solid 1px #666;
-  width: 110px;
-  word-wrap: break-word;
-}
-
-h3 {
-  display: inline-block;
-  position: relative;
-  text-align: center;
-  font-size: 1.5em;
-  color: #cecece;
-}
-h3:before {
-  content: "\25C0";
-  position: absolute;
-  left: -50px;
-  -webkit-animation: leftRight 2s linear infinite;
-  animation: leftRight 2s linear infinite;
-}
-h3:after {
-  content: "\25b6";
-  position: absolute;
-  right: -50px;
-  -webkit-animation: leftRight 2s linear infinite reverse;
-  animation: leftRight 2s linear infinite reverse;
-}
 @-webkit-keyframes leftRight {
   0%    { -webkit-transform: translateX(0)}
   25%   { -webkit-transform: translateX(-10px)}
@@ -161,24 +133,3 @@ h3:after {
   75%   { transform: translateX(10px)}
   100%  { transform: translateX(0)}
 }
-
-/*
-    Don't look at this last part. It's unnecessary. I was just playing with pixel gradients... Don't judge.
-*/
-/*
-@media screen and (max-width: 601px) {
-  .rwd-table tr {
-    background-image: -webkit-linear-gradient(left, #428bca 137px, #f5f9fc 1px, #f5f9fc 100%);
-    background-image: -moz-linear-gradient(left, #428bca 137px, #f5f9fc 1px, #f5f9fc 100%);
-    background-image: -o-linear-gradient(left, #428bca 137px, #f5f9fc 1px, #f5f9fc 100%);
-    background-image: -ms-linear-gradient(left, #428bca 137px, #f5f9fc 1px, #f5f9fc 100%);
-    background-image: linear-gradient(left, #428bca 137px, #f5f9fc 1px, #f5f9fc 100%);
-  }
-  .rwd-table tr:nth-child(odd) {
-    background-image: -webkit-linear-gradient(left, #428bca 137px, #ebf3f9 1px, #ebf3f9 100%);
-    background-image: -moz-linear-gradient(left, #428bca 137px, #ebf3f9 1px, #ebf3f9 100%);
-    background-image: -o-linear-gradient(left, #428bca 137px, #ebf3f9 1px, #ebf3f9 100%);
-    background-image: -ms-linear-gradient(left, #428bca 137px, #ebf3f9 1px, #ebf3f9 100%);
-    background-image: linear-gradient(left, #428bca 137px, #ebf3f9 1px, #ebf3f9 100%);
-  }
-}*/

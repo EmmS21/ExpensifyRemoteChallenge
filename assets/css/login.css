@@ -24,9 +24,7 @@ h2 {
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-right: -50%;
+  top: 35%;
   transform: translate(-50%, -50%);
   width:19%
 }
@@ -35,19 +33,20 @@ h2 {
   border: 2px solid blue;
   padding: 10px;
 }
+
 .submittab {
   border-radius: 10px;
   background-color: #03D47C;
   padding: 10px;
 }
-button {
+.login {
   border-radius: 10px;
   background-color: #03D47C;
   padding: 10px;
   color: white;
   font-weight: bold;
 }
-img{
+.login-img{
   height: auto;
   max-width: 10%;
   display: block;
@@ -71,4 +70,8 @@ img{
 }
 p{
   color: white;
+}
+#auth-error {
+  color: red;
+  display: none;
 }
