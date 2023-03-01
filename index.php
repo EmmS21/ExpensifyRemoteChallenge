@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="assets/css/login.css" />
     <link rel="stylesheet" href="assets/css/createtransact.css" />
     <link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
+    <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
     <!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
     <script defer src="assets/js/validate.js"></script>
 </head>

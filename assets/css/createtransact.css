@@ -59,6 +59,19 @@ input[type="text"],  input[type="password"],  input[type="date"],  input[type="d
     box-shadow:  0 -1px 0 rgba(255, 255, 255, 0.1) inset;
     margin-bottom:  10px;
 }
+
+.create-button:disabled,
+.create-button[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
+
+.close {
+    top:0; 
+    right:0;
+}
+
 fieldset  {
     margin-bottom:  30px;
     border:  none;

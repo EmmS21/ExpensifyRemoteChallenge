@@ -116,7 +116,7 @@ function getReq(token){
         url: "proxy.php?url=https://www.expensify.com/api?command=Get",
         data: {partnerName: 'applicant', authToken: token, returnValueList: 'transactionList'},
         success: function (response){
-            console.log(JSON.parse(response)['transactionList'])
+            // console.log(JSON.parse(response)['transactionList'])
             const res = JSON.parse(response)['transactionList']
             for(var i = 0; i < res.length; i++){
                 // console.log('res', res[i]);
@@ -136,17 +136,18 @@ function getReq(token){
             document.getElementById("tablecontainer").style.display = "block";
             document.getElementById("spin").style.display = "none";
             document.getElementById("login-container").style.display = "none";
+            document.getElementById("auth-buttons").style.display = "flex";
         }
     })    
 }
 
+//
 function logout() {
     sessionStorage.removeItem('authToken');
     document.getElementById("login-container").style.display = "block";
     document.getElementById("tablecontainer").style.display = "none";
-
 }
-
+//creating cookie with name authToken and token as value
 function setCookie(name,value,days) {
     var expires = "";
     if (days) {
@@ -163,7 +164,7 @@ function setCookie(name,value,days) {
 function pageLoad()
 {
     const token = sessionStorage.getItem("authToken");
-    console.log("Token:", token);   
+    // console.log("Token:", token);   
     if(token)
     {
         getReq(token);
@@ -172,18 +173,21 @@ function pageLoad()
 
 function createTransaction() {
     const token = sessionStorage.getItem("authToken");
-    const createTransactButton = document.getElementsByClassName('create')[0];
+    console.log('testing create');
+    const createTransactButton = document.getElementsByClassName('create-button')[0];
+    console.log('buttons', createTransactButton);
     createTransactButton.addEventListener('click', function(event) {
         event.preventDefault();
-        const inputs = document.getElementsByTagName('input');
-        const created = inputs[0].value;
-        const amount = inputs[1].value;
-        const merchant = inputs[2].value;
+        const created = document.getElementById('created').value;
+        const amount = document.getElementById('amount').value;
+        const merchant = document.getElementById('merchant').value;
         data = {
+            authToken: token,
             created: created,
             amount: amount,
             merchant: merchant
         },
+        console.log('data', data);
         jQuery.ajax({
             type: "POST",
             url: "proxy.php?url=https://www.expensify.com/api?command=CreateTransaction",
@@ -191,10 +195,39 @@ function createTransaction() {
             contentType: 'application/x-www-form-urlencoded',
             data: data,
             success: function (response){
-                console.log('created', response);
+                document.getElementById("spin").style.display = "block";
+                document.getElementById("create-container").style.display = "none";
+                getReq(data['authToken']);
             }
         })
     })
+}
+
+//close create transaction form
+function hideCreate() {
+    document.getElementById("create-container").style.display = "none";
+    document.getElementById("tablecontainer").style.display = "block";
+}
+
+//disable create transaction button if any fields are empty
+function btnActivation() {
+    console.log("HEY");
+    if (
+      !document.getElementById("created").value.length ||
+      !document.getElementById("merchant").value.length ||
+      !document.getElementById("amount").value.length
+    ) {
+      document.getElementById("create-transaction").disabled = true;
+    } else {
+      document.getElementById("create-transaction").disabled = false;
+    }
+  }
+
+//clear all values in input fields for create transactions form
+function clearForm() {
+    document.getElementById('created').value = '';
+    document.getElementById('amount').value = '';
+    document.getElementById('merchant').value = '';
 }
 
 //unhide form to create transaction
@@ -233,6 +266,7 @@ function submitForm() {
                 document.getElementById("login-container").style.display = "none";
                 document.getElementById("spin").style.display = "block";
                 document.getElementById("auth-buttons").style.display = "flex";
+                document.getElementById("create-container").style.display = "none";
                 getReq(response['authToken']);
             },  
             error: function (response){
@@ -250,6 +284,7 @@ function submitForm() {
 function init() {
     attachKeyUpEvent();
     submitForm("proxy.php");
+    createTransaction("proxy.php");
 }
 
 document.addEventListener('DOMContentLoaded', init);

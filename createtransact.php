@@ -2,7 +2,8 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 	<div id="create-container">
-        <form  method="post">  
+        <form  method="post" onkeyup="btnActivation()" onChange="btnActivation()">
+            <div class="close" onClick="hideCreate()">X</div>  
             <h1>Create Transaction</h1>
             <fieldset>
                 <label for="created">Created:</label>
@@ -12,6 +13,6 @@
 		        <label for="merchant">Merchant:</label>
                 <input type="text" id="merchant" name="merchant" placeholder="Enter Merchant">          
             </fieldset>
-            <button class="create-button" type="submit">Submit</button>
+            <button id="create-transaction" class="create-button" type="submit" disabled>Submit</button>
         </form>
     </div>
