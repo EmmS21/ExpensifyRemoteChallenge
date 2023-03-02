@@ -1,16 +1,11 @@
-
 #create-container{
     display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
-@keyframes animatedBackground  {
-    from  {
-    background-position:  0 0;
-}
-to  {
-    background-position:  100% 0;
-}
-}
 form  {
     max-width:  300px;
     margin:  10px auto;
@@ -18,17 +13,6 @@ form  {
     border-radius:  8px;
 }
 
-a{
-	color:#fff;
-	font-weight:400;
-	text-decoration:none;
-	font-size:26px;
-}
-
-h1  {
-    margin:  0 0 30px 0;
-    text-align:  center;
-}
 input[type="text"],  input[type="password"],  input[type="date"], input[type="email"],  input[type="number"],  textarea,  select  {
     display:block;
     border:none;
@@ -57,9 +41,9 @@ input[type="text"],  input[type="password"],  input[type="date"], input[type="em
 
 .create-button:disabled,
 .create-button[disabled]{
-  border: 1px solid #999999;
-  background-color: #cccccc;
-  color: #666666;
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
 }
 
 .close {
@@ -71,33 +55,14 @@ fieldset  {
     margin-bottom:  30px;
     border:  none;
 }
-legend  {
-    font-size:  1.4em;
-    margin-bottom:  10px;
-}
+
 label  {
     display:  block;
     margin-bottom:  8px;
 }
-label.light  {
-    font-weight:  300;
-    display:  inline;
-}
-.number  {
-    background-color:  #5fcf80;
-    color:  #fff;
-    height:  30px;
-    width:  30px;
-    display:  inline-block;
-    font-size:  0.8em;
-    margin-right:  4px;
-    line-height:  30px;
-    text-align:  center;
-    text-shadow:  0 1px 0 rgba(255, 255, 255, 0.2);
-    border-radius:  100%;
-}
+
 @media screen and (min-width: 480px)  {
     form  {
     max-width:  480px;
-}
+    }
 }

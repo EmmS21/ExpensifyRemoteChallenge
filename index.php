@@ -27,7 +27,7 @@
       </div>
       <footer class="footer">
         <h4>Expensify</h4>
-        <p>By logging in, you agree to our <a href="https://use.expensify.com/terms">terms of service</a> and <a href="https://use.expensify.com/privacy">privacy policy</a>.</p>
+        <p>By logging in, you agree to our <a href="https://use.expensify.com/terms" target="_blank" rel="noopener noreferrer">terms of service</a> and <a href="https://use.expensify.com/privacy" target="_blank" rel="noopener noreferrer">privacy policy</a>.</p>
       </footer>
     </nav>
     <div id="loginContent">

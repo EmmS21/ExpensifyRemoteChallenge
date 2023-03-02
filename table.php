@@ -2,7 +2,7 @@
 <div id="tablecontainer">
     <span id="new-transact">New Transaction</span>
     <h1 id="transact-title">Transactions:</h1>
-    <table class="rwd-table">
+    <table class="sortable">
         <tbody id="tBody">
             <tr>
                 <th>Transaction Date</th>

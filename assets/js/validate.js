@@ -1,7 +1,7 @@
 const validationState = new Set();
 const loginForm = document.forms[0];
 
-// Function manipulates validation messages by toggling them
+// Toggles validation messages 
 function manipulateValidationMsg(validationData) {
     const { inputProps, action } = validationData;
     const elementValidationMsg = inputProps.nextElementSibling;
@@ -14,11 +14,13 @@ function manipulateValidationMsg(validationData) {
         validationMsgClasses.add("hide");
     };
 
-    return action === "hide" ? addClass() : removeClass();
+    return action === "hide" ? addClass()
+    : 
+    removeClass();
 }
 
 
-// Validation rules for each field in our form.
+// Validation rules for each field in login form.
 function validationRules() {
     return {
         email: (inputProps) => {
@@ -26,7 +28,9 @@ function validationRules() {
             const inputValue = inputProps.value;
             const inputName = inputProps.name;
             const isInputValid = emailValidationRule.test(inputValue);
-            isInputValid ? manageState().removeFromState({inputProps, inputName}) : manageState().addToState({inputProps, inputName});
+            isInputValid ? manageState().removeFromState({inputProps, inputName}) 
+            : 
+            manageState().addToState({inputProps, inputName});
             return true;
         },
 
@@ -35,7 +39,9 @@ function validationRules() {
             const inputName = inputProps.name;
             const isInputValid = inputValue.length > 3;
 
-            isInputValid ? manageState().removeFromState({inputProps, inputName}) : manageState().addToState({inputProps, inputName});
+            isInputValid ? manageState().removeFromState({inputProps, inputName}) 
+            : 
+            manageState().addToState({inputProps, inputName});
 
             return true;
         },
@@ -54,9 +60,8 @@ function validationRules() {
     }
 }
 
-// Function receives an input with its properties
+// Receives input and checks against validation rules
 function validateForm(inputProps) {
-    // console.log("validateForm");
     const inputName = inputProps.name;
     const verifyInputName = {
         "emailadd": validationRules().email,
@@ -109,15 +114,18 @@ function attachKeyUpEvent() {
     });
 }
 
-
-function getReq(token){
+// Retrieve all transactions from API
+function getTransactions(token) {
     jQuery.ajax({
         type: "GET",
         url: "proxy.php?url=https://www.expensify.com/api?command=Get",
-        data: {partnerName: "applicant", authToken: token, returnValueList: "transactionList"},
-        success: function (response){
+        data: {
+                authToken: token, 
+                returnValueList: "transactionList"
+            },
+        success: function (response) {
             const res = JSON.parse(response)["transactionList"]
-            for(var i = 0; i < res.length; i++){
+            for(var i = 0; i < res.length; i++) {
                 var row = $(
                     "<tr><td>"
                     + res[i].inserted
@@ -139,7 +147,7 @@ function getReq(token){
     })    
 }
 
-//logout and remove authToken from localStorage
+// Logout and remove authToken from SessionStorage
 function logout() {
     sessionStorage.removeItem("authToken");
     document.getElementById("login-container").style.display = "flex";
@@ -147,7 +155,7 @@ function logout() {
     document.getElementById("auth-buttons").style.display = "none";
 
 }
-//creating cookie with name authToken and token as value
+// Creating cookie with name authToken and token as value
 function setCookie(name,value,days) {
     var expires = "";
     if (days) {
@@ -156,18 +164,18 @@ function setCookie(name,value,days) {
         expires = "; expires=" + date.toUTCString();
     }
     document.cookie = name + "=" + (value || "")  + expires + "; path=/";
-    console.log("SET TOKEN:",name, value);
     sessionStorage.setItem(name,value);
 }
 
-//when page loads check if there is a cookie in local storage to verify if user is authenticated
+// When page loads check if there is a cookie in sessionStorage to verify if user is authenticated
 function pageLoad() {
     const token = sessionStorage.getItem("authToken");
     if(token) {
-        getReq(token);
+        getTransactions(token);
     }
 }
 
+// Create a new transaction
 function createTransaction() {
     const token = sessionStorage.getItem("authToken");
     const createTransactButton = document.getElementsByClassName("create-button")[0];
@@ -182,30 +190,31 @@ function createTransaction() {
             amount: amount,
             merchant: merchant
         },
-        console.log('data', data);
+        console.log(data);
         jQuery.ajax({
             type: "POST",
             url: "proxy.php?url=https://www.expensify.com/api?command=CreateTransaction",
             dataType: "json",
             contentType: "application/x-www-form-urlencoded",
             data: data,
-            success: function (response){
+            success: function (response) {
                 document.getElementById("spin").style.display = "block";
                 document.getElementById("create-container").style.display = "none";
-                getReq(data['authToken']);
+                getTransactions(data['authToken']);
                 tempAlert(`New transaction created by merchant: ${data["merchant"]}`,8000);
             }
         })
     })
 }
 
-//close create transaction form
+// Close create transaction form
 function hideCreate() {
     document.getElementById("create-container").style.display = "none";
     document.getElementById("tablecontainer").style.display = "block";
+    clearForm();
 }
 
-//disable create transaction button if any fields are empty
+// Disable create transaction button if any fields are empty
 function btnActivation() {
     if (
       !document.getElementById("created").value.length ||
@@ -218,19 +227,20 @@ function btnActivation() {
     }
   }
 
-//clear all values in input fields for create transactions form
+// Clear all values in input fields for create transactions form when create transaction for is closed
 function clearForm() {
     document.getElementById("created").value = "";
     document.getElementById("amount").value = "";
     document.getElementById("merchant").value = "";
 }
 
-//unhide form to create transaction
+// Unhide form to create transaction
 function openCreate() {
     document.getElementById("create-container").style.display = "block";
     document.getElementById("tablecontainer").style.display = "none";
 }
 
+// Hanndling login process
 function submitForm() {
     var script = document.createElement("script");
     script.src = "https://code.jquery.com/jquery-3.6.3.min.js"; 
@@ -243,8 +253,6 @@ function submitForm() {
         const password = inputs[1].value        
         manageState().validateState();
         data = {
-            partnerName:"applicant",
-            partnerPassword: "d7c3119c6cdab02d68d9",
             partnerUserID: emailAddress,
             partnerUserSecret: password
         },
@@ -255,27 +263,31 @@ function submitForm() {
             contentType: "application/x-www-form-urlencoded",
             data: data,
             success: function (response){
-                if(response["httpCode"] === 200){
-                    console.log("resp", response["authToken"]);
+                if(response["httpCode"] === 200) {
                     setCookie("authToken", response["authToken"],1)
                     document.getElementById("login-container").style.display = "none";
                     document.getElementById("spin").style.display = "block";
                     document.getElementById("auth-buttons").style.display = "flex";
                     document.getElementById("create-container").style.display = "none";
-                    getReq(response["authToken"]);
+                    getTransactions(response["authToken"]);
                 }
-                else if(response["jsonCode"] === 401){
+                else if(response["jsonCode"] === 401) {
                     document.getElementById("auth-error").style.display = "block";
                     document.getElementById("auth-error").innerText = response["message"];
-                } else if(response['jsonCode'] === 404){
+                }
+                else if(response["jsonCode"] === 402) {
+                    document.getElementById("auth-error").style.display = "block";
+                    document.getElementById("auth-error").innerText = response["message"];
+                } 
+                else if(response["jsonCode"] === 404) {
                     document.getElementById("auth-error").style.display = "block";
                     document.getElementById("auth-error").innerText = response["message"]
                 }
             },  
-            error: function (response){
+            error: function (response) {
                 console.log("error", response);
             },
-            complete: function(response){
+            complete: function(response) {
                 response.then((resp)=>{
                     // console.log('complete', resp)
                 })
@@ -284,13 +296,13 @@ function submitForm() {
     });
 }
 
-//create disappearing alert when successful transaction has been created
+// Create disappearing alert when successful transaction has been created
 function tempAlert(msg, duration) {
     document.getElementById("new-transact").style.display = "block";
     document.getElementById("new-transact").innerText =  msg;
-    setTimeout(function(){
+    setTimeout(function() {
         document.getElementById("new-transact").style.display = "none";
-    },duration);
+    }, duration);
 }
 
 
