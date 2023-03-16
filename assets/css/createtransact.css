@@ -4,6 +4,7 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    width: 50%;
 }
 
 form  {
@@ -49,6 +50,7 @@ input[type="text"],  input[type="password"],  input[type="date"], input[type="em
 .close {
     top:0; 
     right:0;
+    cursor: pointer;
 }
 
 fieldset  {

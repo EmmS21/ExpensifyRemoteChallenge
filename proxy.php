@@ -1,7 +1,12 @@
 <?php
+declare(strict_types=1);
 $baseURL=$_REQUEST["url"];
-$partnerName="applicant";
-$partnerPassword="d7c3119c6cdab02d68d9";
+require __DIR__."/vendor/autoload.php";
+$dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__);
+$dotenv-> load();
+
+$partnerName = "applicant";
+$partnerPassword = "d7c3119c6cdab02d68d9";
 
 // Getting the request method sent in to the proxy
 function getRequestMethod() {
@@ -14,9 +19,9 @@ function getPostData() {
 }
 
 // Bypass CORS to make GET request
-function makeGetRequest($baseURL, $partnerName) {
+function makeGetRequest($baseURL) {
+    global $partnerName;
     $ch = curl_init();
-    $partnerName = $partnerName;
     $authToken = $_GET["authToken"];
     $returnValueList = $_GET["returnValueList"];
     $fullURL = $baseURL."&partnerName=".$partnerName."&authToken=".$_GET["authToken"]."&returnValueList=".$_GET["returnValueList"];
@@ -25,17 +30,18 @@ function makeGetRequest($baseURL, $partnerName) {
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
     $response = curl_exec($ch);
-    curl_close($ch);  
-    if($e = curl_error($ch)) {
-        echo $e;
+    if($e = curl_errno($ch)) {
+      echo $e;
+      curl_close($ch);  
     } else {
       echo $response;
     }
 }
 
 // Bypass CORS to make POST request
-function makePostRequest($baseURL, $partnerName, $partnerPassword) {
+function makePostRequest($baseURL) {
   $ch = curl_init();
+  global $partnerName, $partnerPassword;
   $_POST["partnerName"] = $partnerName;
   $_POST["partnerPassword"] = $partnerPassword;
   $data = http_build_query($_POST);
@@ -46,9 +52,9 @@ function makePostRequest($baseURL, $partnerName, $partnerPassword) {
   curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
   $response = curl_exec($ch);
-  curl_close($ch);
-  if($e = curl_error($ch)) {
+  if($e = curl_errno($ch)) {
     echo $e;
+    curl_close($ch);
   }
   else {
     echo $response;
@@ -58,10 +64,10 @@ function makePostRequest($baseURL, $partnerName, $partnerPassword) {
 $response = "";
 switch (getRequestMethod()) {
   case "GET":
-    $response = makeGetRequest($baseURL, $partnerName);
+    $response = makeGetRequest($baseURL);
     break;
   case "POST":
-    $response = makePostRequest($baseURL, $partnerName, $partnerPassword);
+    $response = makePostRequest($baseURL);
     break;
   default:
     echo "There has been an error";

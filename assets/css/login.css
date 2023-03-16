@@ -5,6 +5,7 @@
   align-items: center;
   text-align: center;
   min-height: 30vh;
+  margin:0 auto;
 }
 
 .input-div {
@@ -12,14 +13,9 @@
   flex-direction: column;
   position: absolute;
   top: 35%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  width:19%
-}
-
-.inputtab {
-  border-radius: 10px;
-  border: 2px solid blue;
-  padding: 10px;
+  width:30%;
 }
 
 .login {
@@ -28,15 +24,14 @@
   padding: 10px;
   color: white;
   font-weight: bold;
+  width: 50%;
+  margin:0 auto;
 }
 
 .login-img{
   height: auto;
-  max-width: 10%;
+  max-width: 15%;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 30%;
 }  
 
 ::placeholder {
@@ -56,7 +51,51 @@
   display: none!important;
 }
 
+.form-class {
+  min-height: 35vh;
+}
+
 #auth-error {
   color: red;
   display: none;
 }
+
+.footer-img {
+  height: 50%;
+  width: 50%;
+  position: absolute;
+  left: 55%;
+  margin-right: -50%;
+  transform: translate(-50%, 0%);
+  -ms-transform: translate(-50%, 0%);
+  -webkit-transform: translate(-50%, 0%);
+  -moz-transform: translate(-50%, 0%);
+  -o-transform: translate(-50%, 0%);
+}
+
+.change-colours { 
+  -webkit-animation: bgcolorchange 4s infinite; /* Chrome, Safari, Opera */ 
+  animation: 10s infinite bgcolorchange;
+}
+@keyframes bgcolorchange {
+  25% {
+    background-color: #F58CFD;
+  }
+  50% {
+    background-color: #0184FE;
+  }
+  75% {
+    background-color: #03D37C;
+  }
+  100% {
+    background-color: #FEF9EF;
+  }
+}
+/* Chrome, Safari, Opera */
+ @-webkit-keyframes bgcolorchange {
+      25%   {background: #F58CFD;}
+      50%  {background: #0184FE;}
+      75%  {background: #03D37C;}
+      100% {background: #FEF9EF;}
+ }
+
